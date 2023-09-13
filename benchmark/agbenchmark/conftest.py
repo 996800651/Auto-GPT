@@ -76,11 +76,7 @@ def resolve_workspace_path(workspace: Path) -> Path:
 
         # Check if it starts with "os.path.join"
         if path_expr.strip().startswith("os.path.join"):
-            # Evaluate the path string
-            path_value = eval(path_expr)
-
-            # Replace the original string with the evaluated result
-            return path_value
+            return eval(path_expr)
         else:
             raise ValueError("Invalid workspace path expression.")
     elif isinstance(workspace, str):
@@ -105,7 +101,6 @@ def config(request: Any) -> Any:
     Raises:
         json.JSONDecodeError: If the benchmark configuration file is not a valid JSON file.
     """
-    config = {"workspace": {}}
     agent_benchmark_config_path = Path.cwd() / "agbenchmark_config" / "config.json"
     try:
         with open(agent_benchmark_config_path, "r") as f:
@@ -117,8 +112,7 @@ def config(request: Any) -> Any:
         print("Error: benchmark_config.json is not a valid JSON file.")
         raise
 
-    config["AgentBenchmarkConfig"] = agent_benchmark_config
-
+    config = {"workspace": {}, "AgentBenchmarkConfig": agent_benchmark_config}
     config["workspace"]["input"] = resolve_workspace_path(
         agent_benchmark_config.workspace.input
     )
@@ -471,7 +465,7 @@ def run_agent(request: Any) -> Any:
         )
         time.sleep(3)
         yield
-        print(f"Terminating agent")
+        print("Terminating agent")
         process.terminate()
     else:
         yield

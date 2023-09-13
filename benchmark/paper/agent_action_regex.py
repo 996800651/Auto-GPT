@@ -157,14 +157,14 @@ def is_action_miniagi(log):
 
     # Check for the <c>...</c> pattern and whether it matches any action function names
     c_pattern_match = False
-    c_pattern_search = re.search(r"<c>(.*?)<\/c>", log)
-    if c_pattern_search:
+    if c_pattern_search := re.search(r"<c>(.*?)<\/c>", log):
         c_pattern_match = c_pattern_search.group(1) in action_function_names
 
     # Check for the "ACTION:" pattern and whether it matches any action function names
     action_pattern_match = False
-    action_pattern_search = re.search(r"ACTION:\s*(\w+)\s*(\(x\d+\))?", log)
-    if action_pattern_search:
+    if action_pattern_search := re.search(
+        r"ACTION:\s*(\w+)\s*(\(x\d+\))?", log
+    ):
         action_pattern_match = action_pattern_search.group(1) in action_function_names
 
     return c_pattern_match or action_pattern_match
@@ -185,13 +185,15 @@ def is_action_turbo(log):
     # List of function names that signify an action
     action_function_names = ["search", "www", "py", "aol", "put", "pyf", "sh", "ls"]
 
-    # Check for the "cmd" key pattern and whether its "name" field matches any action function names
-    cmd_pattern_match = False
-    cmd_pattern_search = re.search(r'"cmd"\s*:\s*{\s*"name"\s*:\s*"(\w+)"', log)
-    if cmd_pattern_search:
-        cmd_pattern_match = cmd_pattern_search.group(1) in action_function_names
-
-    return cmd_pattern_match
+    return (
+        cmd_pattern_search.group(1) in action_function_names
+        if (
+            cmd_pattern_search := re.search(
+                r'"cmd"\s*:\s*{\s*"name"\s*:\s*"(\w+)"', log
+            )
+        )
+        else False
+    )
 
 
 # def is_action_general(log):
