@@ -180,9 +180,12 @@ def generate_tests() -> None:  # sourcery skip: invert-any-all
         in_regression = regression_tests.get(data["name"], None)
         improve_flag = in_regression and "--improve" in commands
         maintain_flag = not in_regression and "--maintain" in commands
-        if "--maintain" in commands and maintain_flag:
-            continue
-        elif "--improve" in commands and improve_flag:
+        if (
+            "--maintain" in commands
+            and maintain_flag
+            or "--improve" in commands
+            and improve_flag
+        ):
             continue
         json_files = create_challenge(data, json_file, json_files)
 

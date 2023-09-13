@@ -24,7 +24,7 @@ class AutoGptFormatter(logging.Formatter):
         # Make sure `msg` is a string
         if not hasattr(record, "msg"):
             record.msg = ""
-        elif not type(record.msg) == str:
+        elif type(record.msg) != str:
             record.msg = str(record.msg)
 
         # Strip color from the message to prevent color spoofing

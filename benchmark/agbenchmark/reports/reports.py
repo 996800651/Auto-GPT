@@ -93,11 +93,11 @@ def generate_single_call_report(
     if "metadata" in challenge_data:
         info_details["metadata"] = challenge_data["metadata"]
 
-    mock = "--mock" in sys.argv  # Check if --mock is in sys.argv
-
     if call.excinfo is None:
         info_details["metrics"]["success"] = True
     else:
+        mock = "--mock" in sys.argv  # Check if --mock is in sys.argv
+
         if not mock:  # don't remove if it's a mock test
             REGRESSION_MANAGER.remove_test(test_name)
         info_details["metrics"]["fail_reason"] = str(call.excinfo.value)

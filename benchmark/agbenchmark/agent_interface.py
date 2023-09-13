@@ -77,7 +77,7 @@ def run_windows_env(process: Any, start_time: float, timeout: float) -> None:
 def run_agent(task: str, timeout: int, agent_config: AgentBenchmarkConfig) -> None:
     print(f"Running agbenchmark/benchmarks.py with timeout {timeout}")
 
-    command = [sys.executable, "-m", "agbenchmark_config.benchmarks", str(task)]
+    command = [sys.executable, "-m", "agbenchmark_config.benchmarks", task]
 
     process = subprocess.Popen(
         command,
@@ -97,7 +97,7 @@ def run_agent(task: str, timeout: int, agent_config: AgentBenchmarkConfig) -> No
     process.wait()
 
     if process.returncode != 0:
-        print(f"The agent timed out")
+        print("The agent timed out")
 
 
 def get_list_of_file_paths(
